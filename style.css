@@ -1,0 +1,39 @@
+html {
+
+    font-size: 62.5%;
+}
+
+
+body {
+    width: 37.5rem;
+    height: 66.7rem;
+}
+
+
+header img {
+    width: 7.5rem;
+    height: 5.3rem;
+
+}
+
+header ion-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+header li {
+    background-color: yellow;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.6rem 2.1rem 1.1rem 2.2rem;
+}
+
+
+.container li {
+    background-color: blue;
+    height: 4rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 0.2rem;
+    text-align: start;
+}
