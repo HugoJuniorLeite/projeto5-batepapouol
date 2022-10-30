@@ -1,4 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
+
+    --font-color-hours: #AAAAAA;
+    --font-color-text: #000000;
 
     font-size: 62.5%;
 }
@@ -6,14 +13,31 @@ html {
 
 body {
     width: 37.5rem;
-    height: 66.7rem;
+    height: auto;
+    font-family: 'Roboto';
+    Font-style: Mixed;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.6rem;
+    letter-spacing: 0em;
+    text-align: left;
+    color: var(--font-color-text);
+    margin-top: 8.9rem;
+
 }
 
+header {
+    background-color: yellow;
+    width: 37.5rem;
+    height: 8rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 
 header img {
     width: 7.5rem;
     height: 5.3rem;
-
 }
 
 header ion-icon {
@@ -22,18 +46,95 @@ header ion-icon {
 }
 
 header li {
-    background-color: yellow;
+
     display: flex;
     justify-content: space-between;
     padding: 1.6rem 2.1rem 1.1rem 2.2rem;
 }
 
+.container {
+    margin-top: 2.6rem;
+
+}
 
 .container li {
-    background-color: blue;
-    height: 4rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 4rem;
+    max-height: auto;
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.4rem;
     border-radius: 0.2rem;
     text-align: start;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    word-break: break-word;
+ 
+}
+
+.container li:last-child {
+    padding-bottom: 10rem;
+    flex-wrap: wrap;
+}
+
+.container li span{
+    margin-right: 0.5rem;
+    flex-wrap: wrap;
+}
+
+span:nth-child(1) {
+    color: var(--font-color-hours);
+    flex-wrap: wrap;
+}
+
+span:nth-child(2) {
+
+    font-weight: 700;
+    flex-wrap: wrap;
+}
+
+nav {
+    display: none;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+
+footer input {
+    position: relative;
+    width: 37.5rem;
+    height: 8rem;
+}
+
+footer ion-icon {
+    position: absolute;
+    bottom: 2.7rem;
+    right: 1.7rem;
+}
+
+
+
+.action{
+
+    background-color: #FFFFFF;
+}
+
+.action1{
+
+    background-color: #DCDCDC;
+}
+
+.action2{
+    background-color:#FFDEDE;
+}
+
+
+main{
+    background-color:#F3F3F3;
+ 
 }
