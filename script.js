@@ -11,18 +11,18 @@ function login() {
     inputLogin.innerHTML = `
     <img src="/images/logo-chat.svg" alt="">    
     <input class="entrar" type="text" placeholder="Digite seu nome"/>
-<button onclick="nomeUser(this)"> Entrar</button>
+<button onclick="nameUser(this)"> Entrar</button>
 `
 }
 
-function nomeUser() {
+function nameUser() {
     user = document.querySelector('.entrar').value
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', { name: user });
-    promise.then(criarHeader)
-    promise.catch(logar)
+    promise.then(createHeader)
+    promise.catch(loginChat)
 }
 
-function criarHeader() {
+function createHeader() {
     inputLogin = document.querySelector('.login')
     inputLogin.classList.add('escondido')
     let footer = document.querySelector('header')
@@ -35,14 +35,14 @@ function criarHeader() {
 </ul>`
 
     getmessages()
-    criarFooter()
+    createFooter()
     online()
     setInterval(getmessages, 3000)
     setInterval(testActive, 5000)
     setInterval(online, 10000)
 }
 
-function criarFooter() {
+function createFooter() {
     let footer = document.querySelector('footer')
     footer.innerHTML = `
 
@@ -58,47 +58,47 @@ function criarFooter() {
 function testActive() {
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', { name: user })
     promise.then();
-    promise.catch(logar)
+    promise.catch(loginChat)
 }
 
-function logar() {
+function loginChat() {
     alert(`o nome ${user} já possuie na sala, por favor escolha outro nome...Ex: segestão -${user}-`);
     window.location.reload()
 }
 
 
-function enviarMensagem() {
+function postMessages() {
     const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
         from: user,
         to: message.to,
         text: message.text,
         type: message.type
     });
-    promise.then(testeDeEnviarMensagem)
-    promise.catch(tratarErro);
+    promise.then(sendMsg)
+    promise.catch(solutionErr);
 }
 
 
-function tratarErro(erro) {
-    console.log("Status code: " + erro.response.status); // Ex: 404
-    console.log("Mensagem de erro: " + erro.response.data); // Ex: Not Found
+function solutionErr(err) {
+    console.log("Status code: " + err.response.status);
+    console.log("Mensagem de erro: " + err.response.data);
 }
 
-function testeDeEnviarMensagem() {
+function sendMsg() {
     getmessages()
 }
 
 function getmessages() {
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-    promise.then(processarResposta);
+    promise.then(processResponse);
 }
 
-function processarResposta(resposta) {
-    messages = resposta.data
-    rederizarmensagem()
+function processResponse(answer) {
+    messages = answer.data
+    showMessage()
 }
 
-function rendereziarNav(users) {
+function showNav(users) {
     usersOnline = users.data
     let listUsers = document.querySelector('.select-user')
     listUsers.innerHTML = "";
@@ -117,17 +117,18 @@ function rendereziarNav(users) {
 
     const navInferior = document.querySelector('.type-message')
     navInferior.innerHTML = '';
-    navInferior.innerHTML = `<h2>Escolha a visibilidade:</h2>
-    <li onclick="selettypemessage(this)" id="message"> <ion-icon name="lock-open"></ion-icon><span>Público</span>
 
-    </li>
+    navInferior.innerHTML = `<h2>Escolha a visibilidade:</h2>
+    <li onclick="selettypemessage(this)" id="message"> <ion-icon name="lock-open"></ion-icon><span>Público</span></li>
     <li onclick="selettypemessage(this)" id="private_message"> <ion-icon name="lock-closed"></ion-icon><span>Reservadamente</span></li>
     `
 }
 
+
 function online() {
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants')
-    promise.then(rendereziarNav)
+    promise.then(showNav)
+
 }
 
 function selectUser(clicou) {
@@ -135,31 +136,41 @@ function selectUser(clicou) {
     console.log(to)
 }
 
+
 function selettypemessage(clicou) {
     type = clicou.id
     console.log(type)
 }
 
-function rederizarmensagem() {
+
+function showMessage() {
     let lastElement = document.querySelector('.separetor')
     lastElement.scrollIntoView({ block: "end" });
+
     let listMessages = document.querySelector('.container')
     listMessages.innerHTML = "";
+
     for (let i = 0; i < messages.length; i++) {
         let time = messages[i].time
         let from = messages[i].from
         let to = messages[i].to
         let type = messages[i].type
         let text = messages[i].text
+
         if (to == "Todos" && type == "status") {
+
             let mensagem = `  
     <span> ${time}</span>
     <span>${from}</span>
    <span>${text}</span>
    `
+
             listMessages.innerHTML += `<li class="status"> ${mensagem}</li>`
+
         }
+
         if (type === "message") {
+
             let mensagem = `  
     <span> ${time}</span> 
     <span>${from}</span>  
@@ -167,9 +178,12 @@ function rederizarmensagem() {
     <span>${to}:</span>  
    <span>${text}</span>
    `
+
             listMessages.innerHTML += `<li class="mensagem"> ${mensagem}</li>`
         }
+
         if (type === "private_message" && to === user || from === user && type === "private_message") {
+
             let mensagem = `  
     <span> ${time}</span> 
     <span>${from}</span>  
@@ -177,6 +191,7 @@ function rederizarmensagem() {
     <span>${to}:</span>  
    <span>${text}</span>
    `
+
             listMessages.innerHTML += `<li class="private"> ${mensagem}</li>`
         }
     }
@@ -199,6 +214,7 @@ function rederizarmensagem() {
 
 function pegarInput() {
     const text = document.querySelector('.enviar').value;
+
     message =
     {
         from: user,
@@ -206,16 +222,20 @@ function pegarInput() {
         text: text,
         type: type
     }
-    enviarMensagem()
-    criarFooter()
+
+    postMessages()
+    createFooter()
 }
 
-function menu() {
+
+function menu(clicou) {
     const menu = document.querySelector('nav')
+    menu.classList.remove('escondido')
 }
 
-function backMain() {
+function backMain(clicou) {
     const menu = document.querySelector('nav')
+    menu.classList.add('escondido')
 }
 
 login()

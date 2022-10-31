@@ -252,7 +252,20 @@ h2 {
     height: 3.6rem;
     margin-bottom: 0.1rem;
     align-items: center;
+    cursor: pointer;
+    
 }
+
+
+.select-user li:hover{
+    opacity: 0.7;
+}
+
+
+.type-message li:hover{
+    opacity: 0.7;
+}
+
 
 .select-user span,
 .type-message span {
