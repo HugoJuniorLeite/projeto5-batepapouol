@@ -1,17 +1,43 @@
-const users = prompt('escolha seu nome')
-let mensagen
-let mensagens=[]
+let user
+let message
+let messages = []
+let inputLogin
 
-setInterval( testActive, 5000)
-setInterval( getMensagens, 3000)
+function login() {
 
+    inputLogin = document.querySelector('.login')
+    inputLogin.innerHTML = `
+    <img src="/images/logo-chat.svg" alt="">    
+    <input class="entrar" type="text" placeholder="Digite seu nome"/>
+<button onclick="nomeUser(this)"> Entrar</button>
+`
+}
 
 function nomeUser() {
-    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', { name: users });
-    promise.then(criarFooter)
+    user = document.querySelector('.entrar').value
+    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', { name: user });
+    promise.then(criarHeader)
     promise.catch(logar)
 }
 
+function criarHeader() {
+    inputLogin = document.querySelector('.login')
+    inputLogin.classList.add('escondido')
+    let footer = document.querySelector('header')
+    footer.innerHTML = `
+    <ul>
+    <li>
+        <img src="/images/logo-chat.svg" alt="">
+        <ion-icon name="people"></ion-icon>
+    </li>
+</ul>`
+
+
+    getmessages()
+    criarFooter()
+    setInterval(getmessages, 3000)
+    setInterval(testActive, 5000)
+}
 
 function criarFooter() {
     let footer = document.querySelector('footer')
@@ -19,34 +45,36 @@ function criarFooter() {
 
         <ul>
             <li>
+            
             <input class="enviar" type="text" placeholder="Escreva aqui...">
             <ion-icon name="paper-plane-outline" onclick="pegarInput(this)"></ion-icon>
+            
         </li>
         </ul>
         `
-        getMensagens()
 }
 
 
 function testActive() {
-    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', { name: users })
+    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', { name: user })
     promise.then();
     promise.catch(logar)
 }
 
 function logar(erro) {
- alert( `Status code: ${erro.response.status}
-     Mensagem de erro: ${erro.response.data}`); 
+    alert(`o nome ${user} já possuie na sala, por favor escolha outro nome...Ex: segestão -${user}-`);
     window.location.reload()
 }
 
 
 function enviarMensagem() {
 
-    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', { from:users,
-     to:mensagen.to, 
-     text: mensagen.text,
-     type: mensagen.type});
+    const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', {
+        from: user,
+        to: message.to,
+        text: message.text,
+        type: message.type
+    });
 
     promise.then(testeDeEnviarMensagem)
     promise.catch(tratarErro);
@@ -54,43 +82,46 @@ function enviarMensagem() {
 
 
 function tratarErro(erro) {
-  console.log("Status code: " + erro.response.status); // Ex: 404
- console.log("Mensagem de erro: " + erro.response.data); // Ex: Not Found
+    console.log("Status code: " + erro.response.status); // Ex: 404
+    console.log("Mensagem de erro: " + erro.response.data); // Ex: Not Found
 }
 
 
 
 function testeDeEnviarMensagem() {
 
-    getMensagens()
+    getmessages()
 }
 
 
-function getMensagens() {
+function getmessages() {
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
     promise.then(processarResposta);
-    
+
 }
 
 
 function processarResposta(resposta) {
     // console.log(resposta.data[0]);
-    mensagens = resposta.data
+    messages = resposta.data
     rederizarmensagem()
 }
 
 function rederizarmensagem() {
+    let lastElement = document.querySelector('.separetor')
+    lastElement.scrollIntoView({ block: "end" });
 
-    let listaDeMensagens = document.querySelector('.container')
-    listaDeMensagens.scrollIntoView({ block: "end" });
-    listaDeMensagens.innerHTML = "";
 
-    for (let i = 0; i < mensagens.length; i++) {
-        let time = mensagens[i].time
-        let from = mensagens[i].from
-        let to = mensagens[i].to
-        let type = mensagens[i].type
-        let text = mensagens[i].text
+    let listmessages = document.querySelector('.container')
+    //listmessages.scrollIntoView({ block: "end" });
+    listmessages.innerHTML = "";
+
+    for (let i = 0; i < messages.length; i++) {
+        let time = messages[i].time
+        let from = messages[i].from
+        let to = messages[i].to
+        let type = messages[i].type
+        let text = messages[i].text
 
         if (to == "Todos" && type == "status") {
 
@@ -100,7 +131,7 @@ function rederizarmensagem() {
    <span>${text}</span>
    `
 
-            listaDeMensagens.innerHTML += `<li class="status"> ${mensagem}</li>`
+            listmessages.innerHTML += `<li class="status"> ${mensagem}</li>`
 
         }
 
@@ -114,10 +145,10 @@ function rederizarmensagem() {
    <span>${text}</span>
    `
 
-            listaDeMensagens.innerHTML += `<li class="mensagem"> ${mensagem}</li>`
+            listmessages.innerHTML += `<li class="mensagem"> ${mensagem}</li>`
         }
 
-        if ( type === "private_message") {
+        if (type === "private_message" && to === user || from === user && type === "private_message") {
 
             let mensagem = `  
     <span> ${time}</span> 
@@ -127,43 +158,41 @@ function rederizarmensagem() {
    <span>${text}</span>
    `
 
-            listaDeMensagens.innerHTML += `<li class="private"> ${mensagem}</li>`
+            listmessages.innerHTML += `<li class="private"> ${mensagem}</li>`
         }
     }
 
-    let lista = document.querySelectorAll('.status')
-    lista.forEach(element => {
-        element.classList.add('action1');
+    let list = document.querySelectorAll('.status')
+    list.forEach(element => {
+        element.classList.add('login-logout');
     });
 
-    lista = document.querySelectorAll('.mensagem')
-    lista.forEach(element => {
-        element.classList.add('action');
+    list = document.querySelectorAll('.mensagem')
+    list.forEach(element => {
+        element.classList.add('send-message');
     });
 
-    lista = document.querySelectorAll('.private')/* quando implementar a mensagem privada */
-    lista.forEach(element => {
-        element.classList.add('action2');
+    list = document.querySelectorAll('.private')
+    list.forEach(element => {
+        element.classList.add('message-private');
     });
-
 }
 
 function pegarInput() {
-    const text =document.querySelector('.enviar').value;
-    const to ="Todos";
-    const type= "message";
+    const text = document.querySelector('.enviar').value;
+    const to = "Todos";
+    const type = "message";
 
-    mensagen= 
-        {from: users,
-         to: to , 
-         text: text , 
-         type: type 
-        }
-    
-        enviarMensagem()
-        criarFooter()
+    message =
+    {
+        from: user,
+        to: to,
+        text: text,
+        type: type
+    }
 
+    enviarMensagem()
+    criarFooter()
 }
 
-
-nomeUser()
+login()
