@@ -17,7 +17,7 @@ html {
     --login-logout: #DCDCDC;
     --message-private: #FFDEDE;
     --background-main: #F3F3F3;
-    --background-button:#E7E7E7;
+    --background-button: #E7E7E7;
 
     /*color border */
     --border-input-login: #D7D7D7;
@@ -61,6 +61,7 @@ body {
     width: 13rem;
     height: 9.2rem;
     margin-top: 7.2rem;
+    border: none;
 }
 
 .login input {
@@ -124,7 +125,7 @@ header li {
     flex-wrap: wrap;
     min-height: 4rem;
     max-height: auto;
-    width: 100%;
+    width: 100vw;
     margin-bottom: 0.4rem;
     border-radius: 0.2rem;
     text-align: start;
@@ -200,4 +201,84 @@ main {
 
 .separetor {
     padding-bottom: 10rem;
+}
+
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    z-index: 2;
+}
+
+
+.back-main {
+    width: 30.9333%;
+    background-color: rgba(0, 0, 0, 0.6);
+
+}
+
+.nav-options {
+    width: 100%;
+    overflow-y: scroll;
+    background-color: #FFFFFF;
+    padding-left: 1.7rem;
+    padding-bottom: 5.9rem;
+}
+
+
+
+.select-users {
+    display: flex;
+    align-items: center;
+    height: 8.4rem;
+    text-align: center;
+}
+
+
+.select-user ion-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+
+.select-user li,
+.type-message li,
+h2 {
+    display: flex;
+    height: 3.6rem;
+    margin-bottom: 0.1rem;
+    align-items: center;
+}
+
+.select-user span,
+.type-message span {
+
+    font-size: 1.6rem;
+    line-height: 1.875rem;
+    letter-spacing: 0em;
+    margin-left: 0.7rem;
+}
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.875rem;
+    letter-spacing: 0em;
+    text-align: center;
+
+}
+
+.type-message h2 {
+    height: 6.6rem;
+    padding-left: 2rem;
+}
+
+
+.type-message ion-icon {
+    width: 2.2rem;
+    height: 2.2rem;
 }
