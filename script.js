@@ -10,8 +10,8 @@ function login() {
     inputLogin = document.querySelector('.login')
     inputLogin.innerHTML = `
     <img src="/images/logo-chat.svg" alt="">    
-    <input class="entrar" type="text" placeholder="Digite seu nome"/>
-<button onclick="nameUser(this)"> Entrar</button>
+    <input data-test="input-name" class="entrar" type="text" placeholder="Digite seu nome"/>
+<button data-test="send-name" onclick="nameUser(this)"> Entrar</button>
 `
 }
 
@@ -30,7 +30,7 @@ function createHeader() {
     <ul>
     <li>
         <img src="/images/logo-chat.svg" alt="">
-        <ion-icon name="people" onclick="menu(this)"></ion-icon>
+        <ion-icon data-test="open-participants"  name="people" onclick="menu(this)"></ion-icon>
     </li>
 </ul>`
 
@@ -48,8 +48,8 @@ function createFooter() {
 
         <ul>
             <li>            
-            <input class="enviar" type="text" placeholder="Escreva aqui...">
-            <ion-icon name="paper-plane-outline" onclick="pegarInput(this)"></ion-icon>
+            <input data-test="input-message" class="enviar" type="text" placeholder="Escreva aqui...">
+            <ion-icon data-test="send-message" name="paper-plane-outline" onclick="pegarInput(this)"></ion-icon>
         </li>
         </ul>
         `
@@ -103,13 +103,13 @@ function showNav(users) {
     let listUsers = document.querySelector('.select-user')
     listUsers.innerHTML = "";
     listUsers.innerHTML = `
-        <li onclick="selectUser(this)" id='Todos'>
+        <li data-test="all" onclick="selectUser(this)" id='Todos'>
                 <ion-icon name="people"></ion-icon> <span>Todos</span>
         </li>`
     for (let i = 0; i < usersOnline.length; i++) {
         let user = usersOnline[i].name
         listUsers.innerHTML += `
-        <li onclick="selectUser(this)" id="S${user}">
+        <li data-test="participant" onclick="selectUser(this)" id="S${user}">
         <ion-icon name="person-circle-outline"></ion-icon><span>${user}</span>
     </li>
         `
@@ -119,8 +119,8 @@ function showNav(users) {
     navInferior.innerHTML = '';
 
     navInferior.innerHTML = `<h2>Escolha a visibilidade:</h2>
-    <li onclick="selettypemessage(this)" id="message"> <ion-icon name="lock-open"></ion-icon><span>Público</span></li>
-    <li onclick="selettypemessage(this)" id="private_message"> <ion-icon name="lock-closed"></ion-icon><span>Reservadamente</span></li>
+    <li data-test="public" onclick="selettypemessage(this)" id="message"> <ion-icon name="lock-open"></ion-icon><span>Público</span></li>
+    <li data-test="private"onclick="selettypemessage(this)" id="private_message"> <ion-icon name="lock-closed"></ion-icon><span>Reservadamente</span></li>
     `
 }
 
@@ -165,7 +165,7 @@ function showMessage() {
    <span>${text}</span>
    `
 
-            listMessages.innerHTML += `<li class="status"> ${mensagem}</li>`
+            listMessages.innerHTML += `<li data-test="message" class="status"> ${mensagem}</li>`
 
         }
 
@@ -179,7 +179,7 @@ function showMessage() {
    <span>${text}</span>
    `
 
-            listMessages.innerHTML += `<li class="mensagem"> ${mensagem}</li>`
+            listMessages.innerHTML += `<li data-test="message" class="mensagem"> ${mensagem}</li>`
         }
 
         if (type === "private_message" && to === user || from === user && type === "private_message") {
@@ -192,7 +192,7 @@ function showMessage() {
    <span>${text}</span>
    `
 
-            listMessages.innerHTML += `<li class="private"> ${mensagem}</li>`
+            listMessages.innerHTML += `<li data-test="message" class="private"> ${mensagem}</li>`
         }
     }
 
